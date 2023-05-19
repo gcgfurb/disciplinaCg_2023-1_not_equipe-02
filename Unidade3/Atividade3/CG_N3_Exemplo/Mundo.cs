@@ -109,9 +109,7 @@ namespace gcgcg
 
       #region Objeto: retângulo  
       objetoSelecionado = new Retangulo(mundo, ref rotuloNovo, new Ponto4D(-0.25, 0.25), new Ponto4D(-0.75, 0.75));
-      objetoSelecionado.PrimitivaTipo = PrimitiveType.LineLoop;
-      #endregion
-
+m
       // #region Objeto: segmento de reta  
       // objetoSelecionado = new SegReta(mundo, ref rotuloNovo, new Ponto4D(-0.5, -0.5), new Ponto4D());
       // #endregion
