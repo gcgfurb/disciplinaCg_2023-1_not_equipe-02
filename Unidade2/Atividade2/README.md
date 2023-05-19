@@ -13,7 +13,7 @@ Lembretes:
   - [atividade 4](#4-spline) na pasta [CG_N2_4](CG_N2_4)  
   - [atividade 5](#5-bbox-dos-círculos) na pasta [CG_N2_5](CG_N2_5)  
 
-## 1. Explorar o uso da primitiva gráfica ponto no SRU  
+## 1. Círculo no centro do SRU  
 
 Implemente uma aplicação para desenhar um círculo no centro do Sistema de Referência do Universo (SRU), com raio de valor 0.5. Utilize 72 pontos (com um tamanho do ponto de 5) simetricamente distribuídos sobre o perímetro do círculo, de forma que o resultado final seja o mais parecido com o código: [CG_N2_1_win10-x64.zip](./CG_N2_2/CG_N2_1_win10-x64.zip "CG_N2_1_win10-x64.zip"). Neste caso crie uma nova classe com o nome ```Circulo``` em ```Circulo.cs```, e usem como base as classes: [Ponto.cs](./CG_N2/Ponto.cs), [SegReta.cs](./CG_N2/SegReta.cs), [Retangulo.cs](./CG_N2/Retangulo.cs) e [Poligono.cs](./CG_N2/Poligono.cs).  
 
@@ -24,7 +24,7 @@ Observações:
 - utilize as funções sin(ang) e cos(ang) para calcular os pontos do círculo da Classe [CG_Biblioteca_Matematica] fornecida;  
 - não é permitido usar o comando circle do OpenGL e nem outra implementação que não usem as funções da classe [CG_Biblioteca_Matematica].  
 
-## 2. Primitivas Geométricas  
+## 2. Primitivas geométricas  
 
 Nesta aplicação a ideia é explorar a utilização das “primitivas geométricas” de forma que o resultado final seja o mais parecido com o código: [CG_N2_2_win10-x64.zip](./CG_N2_2/CG_N2_2_win10-x64.zip "CG_N2_2_win10-x64.zip"). Aqui se pode usar a classe [Retangulo.cs](./CG_N2/Retangulo.cs).  
 
