@@ -1,10 +1,10 @@
 using System;
 
-namespace gcgcg
+namespace CG_Biblioteca
 {
   public abstract class Utilitario
   {
-    public static char charProximo(char atual)
+    public static char CharProximo(char atual)
     {
       return Convert.ToChar(atual + 1);
     }
@@ -26,6 +26,13 @@ namespace gcgcg
         }
       }
       return Char.ToUpper(input.Key.ToString()[0]);
+    }
+
+    public static Ponto4D NDC_TelaSRU(int largura, int altura, Ponto4D mousePosition)
+    {
+      var x = 2 * (mousePosition.X / largura) - 1;
+      var y = 2 * (-mousePosition.Y / altura) + 1;
+      return new Ponto4D(x, y);
     }
 
     public static void AjudaTeclado()
