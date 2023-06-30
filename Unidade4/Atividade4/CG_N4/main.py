@@ -57,6 +57,64 @@ def load_textures(filenames):
 
     return texture_ids
 
+# Configuração básica de iluminação
+def setup_basic_lighting():
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glLightfv(GL_LIGHT0, GL_POSITION, (1, 1, 1, 0))
+    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.2, 0.2, 0.2, 1.0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+
+# Configuração de mapas de iluminação
+def setup_lighting_maps():
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glLightfv(GL_LIGHT0, GL_POSITION, (1, 1, 1, 0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+    glEnable(GL_COLOR_MATERIAL)
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE)
+
+# Configuração de luz direcional
+def setup_directional_lights():
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glLightfv(GL_LIGHT0, GL_POSITION, (1, 1, 1, 0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+    glLightfv(GL_LIGHT0, GL_SPECULAR, (1.0, 1.0, 1.0, 1.0))
+    glMaterialfv(GL_FRONT, GL_SPECULAR, (1.0, 1.0, 1.0, 1.0))
+    glMaterialfv(GL_FRONT, GL_SHININESS, 50.0)
+
+# Configuração de luz pontual
+def setup_point_lights():
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glLightfv(GL_LIGHT0, GL_POSITION, (0, 0, 2, 1))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+    glLightfv(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1)
+    glLightfv(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05)
+
+# Configuração de holofote
+def setup_spotlight():
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glLightfv(GL_LIGHT0, GL_POSITION, (0, 0, 2, 1))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, (0, 0, -1))
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 30.0)
+    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 2.0)
+
+# Configuração de múltiplas luzes
+def setup_multiple_lights():
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glLightfv(GL_LIGHT0, GL_POSITION, (1, 1, 1, 0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+    glLightfv(GL_LIGHT0, GL_SPECULAR, (1.0, 1.0, 1.0, 1.0))
+
+    glEnable(GL_LIGHT1)
+    glLightfv(GL_LIGHT1, GL_POSITION, (-1, -1, -1, 0))
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, (0.5, 0.5, 0.5, 1.0))
+
 # Inicialização do Pygame
 pygame.init()
 pygame.display.set_mode((WIDTH, HEIGHT), DOUBLEBUF | OPENGL)
@@ -74,7 +132,7 @@ texture_filenames = [
     "imagem3.jpg",  # Face 2
     "imagem4.jpg",  # Face 3
     "imagem5.jpg",  # Face 4
-    "imagem6.jpg"   # Face 5
+    "imagem7.jpeg"  # Face 5
 ]
 texture_ids = load_textures(texture_filenames)
 
@@ -119,6 +177,20 @@ while running:
                 zoom_in = True
             elif event.key == pygame.K_e:
                 zoom_out = True
+            elif event.key == pygame.K_1:
+                setup_basic_lighting()
+            elif event.key == pygame.K_2:
+                setup_lighting_maps()
+            elif event.key == pygame.K_3:
+                setup_directional_lights()
+            elif event.key == pygame.K_4:
+                setup_point_lights()
+            elif event.key == pygame.K_5:
+                setup_spotlight()
+            elif event.key == pygame.K_6:
+                setup_multiple_lights()
+            elif event.key == pygame.K_0:
+                glDisable(GL_LIGHTING)
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 move_right = False
@@ -163,26 +235,20 @@ while running:
     for i, surface in enumerate(cube_faces):
         glBindTexture(GL_TEXTURE_2D, texture_ids[i])  # Seleciona a textura correta para a face atual
         glBegin(GL_QUADS)
-        for j in range(4):
-            vertex = surface[j]
-            texture_coord = cube_faces_textures[j]
-
+        for j, vertex_index in enumerate(surface):
+            texture_coord = cube_faces_textures[j % 4]  # Corrige o índice de coordenadas de textura
             glTexCoord2fv(texture_coord)
-            glVertex3fv(
-                (cube_vertices[vertex][0] + cube_x, cube_vertices[vertex][1] + cube_y, cube_vertices[vertex][2]))
+            glVertex3fv(cube_vertices[vertex_index])
         glEnd()
     glDisable(GL_TEXTURE_2D)
 
-    # Atualiza o ângulo de rotação
+    # Atualiza a rotação do cubo
+    glRotatef(rotation_angle, 1, 1, 1)
     rotation_angle += 1
 
-    # Atualiza a tela
+    # Atualiza a exibição
     pygame.display.flip()
     clock.tick(60)
-
-    # Atualiza o índice da textura atual para a próxima textura
-    current_texture_index = (current_texture_index + 1) % len(texture_filenames)
-    texture_ids = load_textures(texture_filenames)  # Recarrega as texturas
 
 # Encerra o Pygame
 pygame.quit()
